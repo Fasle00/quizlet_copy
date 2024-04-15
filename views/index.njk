@@ -1,0 +1,18 @@
+{% extends "layout.njk" %}
+{% import "navbar.njk" as navbar %}
+
+{% block content %}
+    {{ navbar.setActive("index", loggedIn, username) }}
+    
+    <main class="container">
+
+        
+        <h1>Index</h1>
+        <p>loggedIn = {{loggedIn}}</p>
+        <a href="/create/account">test</a>
+
+
+    </main>
+
+
+{% endblock %}

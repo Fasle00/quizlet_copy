@@ -1,0 +1,63 @@
+{% macro setActive(currentPage='index', loggedIn='false', username='') %}
+<nav class="">
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			{% if currentPage == "index" %}
+
+				<a class="nav-link active" aria-current="page" href="/">Home</a>
+
+			{% else %}
+
+				<a class="nav-link" href="/">Home</a>
+
+			{% endif %}
+		</li>
+
+		<li class="nav-item">
+			{% if currentPage == "quiz" %}
+
+				<a class="nav-link active" aria-current="page" href="/quiz">Quizes</a>
+
+			{% else %}
+
+				<a class="nav-link" href="/quiz">Quizes</a>
+
+			{% endif %}
+		</li>
+
+	{% if currentPage == "user" %}
+
+		<li class="nav-item">
+			<a class="nav-link active" aria-current="page" href="/user/{{username}}">User</a>
+		</li>
+
+	{% elif loggedIn == true %}
+
+		<li class="nav-item">
+			<a class="nav-link" href="/user/{{username}}">User</a>
+		</li>
+
+	{% else %}
+
+		<li class="nav-item">
+			{% if currentPage == "login" %}
+				<a class="nav-link active" aria-current="page" href="/login">Login</a>
+			{% else %}
+				<a class="nav-link" href="/login">Login</a>
+			{% endif %}
+		</li>
+
+		<li class="nav-item">
+			{% if currentPage == "register" %}
+				<a class="nav-link active" aria-current="page" href="/register">Register</a>
+			{% else %}
+				<a class="nav-link" href="/register">Register</a>
+			{% endif %}
+		</li>
+
+	{% endif %}
+
+
+  </ul>
+</nav>
+{% endmacro %}

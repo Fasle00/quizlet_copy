@@ -1,0 +1,21 @@
+{% extends "layout.njk" %}
+{% import "navbar.njk" as navbar %}
+
+{% block content %}
+{{navbar.setActive("user", loggedIn, username)}}
+
+  <main class="container">
+	<form action="/tweeps" method="post" class="row g-3">
+		<div class="col-md-6">
+			<label for="tweep">Tweep</label>
+			<textarea id="tweep" name="tweep" class="form-control" required></textarea>
+		</div>
+		<div class="col-12">
+			<input type="submit" id="submit" name="submit">
+		</div>
+		{% if error %}
+		<div>{{error}}</div>
+		{% endif %}
+	</form>
+
+{% endblock %}

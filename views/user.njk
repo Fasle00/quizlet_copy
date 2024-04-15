@@ -1,0 +1,13 @@
+{% extends "layout.njk" %}
+{% import "navbar.njk" as navbar %}
+
+{% block content %}
+{{navbar.setActive("user", loggedIn, username)}}
+
+<main class="container">
+	<h1> {{ username }}</h1>
+	<p> {{ loggedIn }}'s profile</p>
+	<a href="/user/{{ username }}/new">create tweep</a>
+</main>
+
+{% endblock %}
