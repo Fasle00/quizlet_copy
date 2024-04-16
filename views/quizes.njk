@@ -1,0 +1,23 @@
+{% extends "layout.njk" %}
+{% import "./component/navbar.njk" as navbar %}
+
+{% block content %}
+  {{ navbar.setActive("tweeps", loggedIn, username) }}
+
+  <main class="container">
+	<h1>Home</h1>
+	<p>Welcome to the home page</p>
+	<div class="row gx-3 gy-3">
+	{% for quiz in quizes %}
+		<div class="card col-sm-4">
+			<div class="card-body">
+				{{quiz.text}}
+			</div>
+			<div class="card-footer">
+				{{quiz.name}}
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+  </main>
+{% endblock %}

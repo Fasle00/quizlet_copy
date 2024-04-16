@@ -1,11 +1,11 @@
 {% extends "layout.njk" %}
-{% import "navbar.njk" as navbar %}
+{% import "./component/navbar.njk" as navbar %}
 
 {% block content %}
 {{navbar.setActive("user", loggedIn, username)}}
 
   <main class="container">
-	<form action="/tweeps" method="post" class="row g-3">
+	<form action="/new" method="post" class="row g-3">
 		<div class="col-md-6">
 			<label for="tweep">Tweep</label>
 			<textarea id="tweep" name="tweep" class="form-control" required></textarea>
