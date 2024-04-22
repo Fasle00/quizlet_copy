@@ -2,9 +2,10 @@
 {% import "./component/navbar.njk" as navbar %}
 
 {% block content %}
-  {{ navbar.setActive("quizes", loggedIn, username) }}
 
-  <main class="container">
+{{ navbar.setActive("quizes", loggedIn, username) }}
+
+<main class="container">
 	<h1>{{quiz.name}}</h1>
 	<h2>{{quiz.username}}</h2>
 	<p>{{quiz.description}}</p>
@@ -21,6 +22,5 @@
 		</li>
 	{% endfor %}
 	</ul>
-			
-  </main>
+</main>
 {% endblock %}
