@@ -2,21 +2,26 @@
 {% import "./component/navbar.njk" as navbar %}
 
 {% block content %}
-  {{ navbar.setActive("tweeps", loggedIn, username) }}
+  {{ navbar.setActive("quizes", loggedIn, username) }}
 
   <main class="container">
 	<h1>Home</h1>
 	<p>Welcome to the home page</p>
-	<div class="row gx-3 gy-3">
+	<div class="row row-cols-md-4 gx-3 gy-3">
 	{% for quiz in quizes %}
-		<div class="card col-sm-4">
-			<div class="card-body">
-				{{quiz.text}}
-			</div>
-			<div class="card-footer">
+	<div class="col">
+		<div class="card h-100">
+			<div class="card-header">
 				{{quiz.name}}
 			</div>
+			<div class="card-body">
+				{{quiz.description}}
+			</div>
+			<div class="card-footer">
+				{{quiz.username}}
+			</div>
 		</div>
+	</div>
 	{% endfor %}
 	</div>
   </main>

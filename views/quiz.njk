@@ -1,0 +1,26 @@
+{% extends "layout.njk" %}
+{% import "./component/navbar.njk" as navbar %}
+
+{% block content %}
+  {{ navbar.setActive("quizes", loggedIn, username) }}
+
+  <main class="container">
+	<h1>{{quiz.name}}</h1>
+	<h2>{{quiz.username}}</h2>
+	<p>{{quiz.description}}</p>
+
+	<ul class="list-group">
+	{% for question in questions %}
+		<li class="list-group-item row">
+			<div class="col">
+			{{question.front}}
+			</div>
+			<div class="col">
+			{{question.back}}
+			</div>
+		</li>
+	{% endfor %}
+	</ul>
+			
+  </main>
+{% endblock %}

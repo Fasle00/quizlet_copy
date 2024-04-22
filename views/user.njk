@@ -6,7 +6,26 @@
 
 <main class="container">
 	<h1> {{ username }}</h1>
-	<a href="/user/{{ username }}/new">create tweep</a>
+	<a href="/quiz/new" class="mb-3">create quiz</a>
+
+	<div>my quizes</div>
+	<div class="row row-cols-md-4 gx-3 gy-3">
+		{% for quiz in quizes %}
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-header">
+					{{quiz.name}}
+				</div>
+				<div class="card-body">
+					{{quiz.description}}
+				</div>
+				<div class="card-footer">
+					{{quiz.username}}
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
 </main>
 
 {% endblock %}

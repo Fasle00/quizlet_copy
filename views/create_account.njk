@@ -1,5 +1,11 @@
-{% extends "layout.njk" %} {% block content %}
-<form action="/create/account" method="post" class="row g-3 needs-validation">
+{% extends "layout.njk" %} 
+{% import "./component/navbar.njk" as navbar %}
+
+{% block content %}
+{{navbar.setActive("index", loggedIn, username)}}
+
+<main class="container">
+<form action="/user" method="post" class="row g-3 needs-validation">
   <div class="col-md-4">
     <label for="validationCustomMail" class="form-label">Email</label>
     <input
@@ -98,4 +104,6 @@
     {# <button class="btn btn-primary" type="submit">Submit form</button> #}
   </div>
 </form>
+</main>
+
 {% endblock %}

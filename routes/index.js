@@ -28,7 +28,7 @@ router.post('/login',
 			return res.render('login.njk', { error: 'Username and password must be 4-32 characters long.' })
 		}
 		try {
-			const [user] = await pool.promise().query(`SELECT * FROM alea_lacta_est_user WHERE alea_lacta_est_user.\`name\` = '${req.body.username}'`)
+			const [user] = await pool.promise().query(`SELECT * FROM fabian_flashcard_user WHERE fabian_flashcard_user.\`name\` = '${req.body.username}'`)
 			console.log(user)
 			console.log(user[0])
 			console.log(user[0].password)
@@ -49,7 +49,7 @@ router.post('/login',
 })
 
 router.get('/hashtest', async function (req, res) {
-	const myPlaintextPassword = 'test';
+	const myPlaintextPassword = 'test2';
 	const someOtherPlaintextPassword = 'not_bacon';
 
 	bcrypt.hash(myPlaintextPassword, saltRounds, function (err, hash) {
