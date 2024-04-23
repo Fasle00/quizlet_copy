@@ -2,19 +2,19 @@
 {% import "./component/navbar.njk" as navbar %}
 {% block content %}
 
-{{navbar.setActive("index", loggedIn, username)}}
+{{navbar.setActive("register", loggedIn, username)}}
 
 <main class="container">
   <form action="/user" method="post" class="row g-3 needs-validation">
 	<div class="col-md-4">
-	  <label for="validationCustomMail" class="form-label">Email</label>
+	  <label for="email" class="form-label">Email</label>
 	  <input
 		type="email"
 		class="form-control"
-		id="validationCustomMail"
+		id="email"
 		placeholder="test@test.mail"
 		required
-		name="mail"
+		name="email"
 	  />
 	  <div class="valid-feedback">Looks good!</div>
 	  <div class="invalid-feedback">Please provide a valid email.</div>
@@ -32,13 +32,13 @@
 	  <div class="valid-feedback">Looks good!</div>
 	</div>
 	<div class="col-md-4">
-	  <label for="validationCustomUsername" class="form-label">Username</label>
+	  <label for="username" class="form-label">Username</label>
 	  <div class="input-group has-validation">
 		<span class="input-group-text" id="inputGroupPrepend">@</span>
 		<input
 		  type="text"
 		  class="form-control"
-		  id="validationCustomUsername"
+		  id="username"
 		  aria-describedby="inputGroupPrepend"
 		  required
 		  name="username"
@@ -47,21 +47,21 @@
 	  </div>
 	</div>
 	<div class="col-md-6">
-	  <label for="validationCustomCity" class="form-label">City</label>
+	  <label for="city" class="form-label">City</label>
 	  <input
 		type="text"
 		class="form-control"
-		id="validationCustomCity"
+		id="city"
 		required
 		name="city"
 	  />
 	  <div class="invalid-feedback">Please provide a valid city.</div>
 	</div>
 	<div class="col-md-3">
-	  <label for="validationCustomState" class="form-label">State</label>
+	  <label for="state" class="form-label">State</label>
 	  <select
 		class="form-select"
-		id="validationCustomState"
+		id="state"
 		required
 		name="state"
 	  >
@@ -73,11 +73,11 @@
 	  <div class="invalid-feedback">Please select a valid state.</div>
 	</div>
 	<div class="col-md-3">
-	  <label for="validationCustom05" class="form-label">Zip</label>
+	  <label for="zip" class="form-label">Zip</label>
 	  <input
 		type="text"
 		class="form-control"
-		id="validationCustom05"
+		id="zip"
 		required
 		name="zip"
 	  />
@@ -104,6 +104,11 @@
 	  {# <button class="btn btn-primary" type="submit">Submit form</button> #}
 	</div>
   </form>
+  {% if error %}
+	<div class="alert alert-danger" role="alert">
+	  {{error}}
+	</div>
+  {% endif %}
 </main>
 
 {% endblock %}
