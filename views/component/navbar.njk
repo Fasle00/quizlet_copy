@@ -2,27 +2,27 @@
 <nav class="">
 	<ul class="nav nav-tabs">
 		<li class="nav-item">
-			{% if currentPage == "index" %}
+			{% if currentPage == "index" -%}
 
 				<a class="nav-link active" aria-current="page" href="/">Home</a>
 
-			{% else %}
+			{%- else -%}
 
 				<a class="nav-link" href="/">Home</a>
 
-			{% endif %}
+			{%- endif %}
 		</li>
 
 		<li class="nav-item">
-			{% if currentPage == "quiz" %}
+			{% if currentPage == "quiz" -%}
 
 				<a class="nav-link active" aria-current="page" href="/quiz">Quizes</a>
 
-			{% else %}
+			{%- else -%}
 
 				<a class="nav-link" href="/quiz">Quizes</a>
 
-			{% endif %}
+			{%- endif %}
 		</li>
 
 		<form action="/quiz/search" class="d-flex" method="get">
@@ -30,38 +30,59 @@
 			<button for="q" class="btn btn-outline-success" type="submit">Search</button>
 		</form>
 
-	{% if currentPage == "user" %}
+		{% if currentPage == "user" -%}
 
-		<li class="nav-item">
-			<a class="nav-link active" aria-current="page" href="/user/{{username}}">User</a>
+		{# <li class="nav-item">
+			<a class="nav-link active"  href="/user/{{username}}">User</a>
+		</li> #}
+		<li class="nav-item dropdown">
+		  <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			User
+		  </a>
+		  <ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
+			<li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
+			<li><hr class="dropdown-divider"></li>
+			<li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+		  </ul>
 		</li>
 
-	{% elif loggedIn == true %}
+		{%- elif loggedIn == true -%}
 
-		<li class="nav-item">
+		{# <li class="nav-item">
 			<a class="nav-link" href="/user/{{username}}">User</a>
+		</li> #}
+		<li class="nav-item dropdown">
+		  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+			User
+		  </a>
+		  <ul class="dropdown-menu">
+			<li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
+			<li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
+			<li><hr class="dropdown-divider"></li>
+			<li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+		  </ul>
 		</li>
 
-	{% else %}
+		{%- else -%}
 
 		<li class="nav-item">
-			{% if currentPage == "login" %}
+			{% if currentPage == "login" -%}
 				<a class="nav-link active" aria-current="page" href="/login">Login</a>
-			{% else %}
+			{%- else -%}
 				<a class="nav-link" href="/login">Login</a>
-			{% endif %}
+			{%- endif %}
 		</li>
 
 		<li class="nav-item">
-			{% if currentPage == "register" %}
+			{% if currentPage == "register" -%}
 				<a class="nav-link active" aria-current="page" href="/user/new">Register</a>
-			{% else %}
+			{%- else -%}
 				<a class="nav-link" href="/user/new">Register</a>
-			{% endif %}
+			{%- endif %}
 		</li>
 
-	{% endif %}
-
+		{%- endif %}
   </ul>
 </nav>
 {% endmacro %}

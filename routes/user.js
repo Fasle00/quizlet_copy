@@ -13,7 +13,10 @@ const { redirect } = require('express/lib/response');
 // show all users
 router.get('/', async function (req, res) {
 	try {
-		const [users] = await pool.promise().query('SELECT * FROM fabian_flashcard_user;');
+		const [users] = await pool.promise().query(`
+		SELECT 
+			* 
+		FROM fabian_flashcard_user;`);
 		res.json(users);
 	} catch (error) {
 		console.log(error);
@@ -21,14 +24,20 @@ router.get('/', async function (req, res) {
 	}
 })
 
+// logout
+router.get("/logout", (req, res) => {
+	req.session.destroy();
+	res.redirect('/');
+});
+
 // create user
 router.get('/new', async function (req, res) {
 	res.render('create_account.njk');
-})
+});
 // create user
 router.post('/',
 	body('email').isLength({ min: 2 }).isEmail(),
-	body('username').isLength({ min: 4, max: 32 }),
+	body('name').isLength({ min: 4, max: 32 }),
 	body('password').isLength({ min: 4, max: 32 }),
 	body('city').isLength({ min: 2 }),
 	body('state').isLength({ min: 4 }),
@@ -37,7 +46,9 @@ router.post('/',
 		const valRes = validationResult(req);
 		if (!valRes.isEmpty()) {
 			console.log(valRes.errors);
-			return res.render('create_account.njk', { error: "poggers test error" });
+			return res.render('create_account.njk', { 
+				error: "poggers test error" 
+			});
 		}
 		try {
 			bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
@@ -47,25 +58,34 @@ router.post('/',
 						fabian_flashcard_user (name, password, email)
 					VALUES
 						(
-							'${req.body.username}',
+							'${req.body.name}',
 							'${hash}',
 							'${req.body.mail}'
 						);`
 					);
 					console.log(responce);
-					if (responce.errno === 1062) {
-						res.render('create_account.njk', { error: "Username already taken" });
-					}
 					req.session.name = req.body.username;
-					res.redirect(`/user/${req.body.username}`);
+					return res.redirect(`/user/${req.body.username}`);
 				} catch (error) {
 					console.log(error);
+					console.log(`error nr: ${error.errno}`);
+					if (error.errno === 1062) {
+						console.log(req.body);
+						return res.render('create_account.njk', { 
+							error: "Username already taken", 
+							...req.body
+						});
+					} else {
+						return res.render('create_account.njk', { 
+							error: "Failed to create an account"
+						});
+					}
 				}
-				
 			})
-			res.json(req.body);
 		} catch (error) {
-			return res.render('create_account.njk', { error: "Failed to create an account" });
+			return res.render('create_account.njk', { 
+				error: "Failed to create an account"
+			});
 		}
 });
 
@@ -80,6 +100,11 @@ router.post('/:id/update', async function (req, res) {
 
 // delete user
 router.post('/:id/delete', async function (req, res) {
+	await pool.promise().query(`
+	DELETE FROM 
+		fabian_flashcard_user 
+	WHERE (\`name\` = '${req.session.username}';`
+	);
 	res.redirect('/');
 });
 
@@ -88,7 +113,7 @@ router.get('/:id', async function (req, res) {
 	if (req.session.name === undefined) {
 		return res.redirect('/login');
 	} else if (req.params.id !== req.session.name){
-		res.redirect(`/user/${req.session.name}`);
+		return res.redirect(`/user/${req.session.name}`);
 	}
 
 	const [quizes] = await pool.promise().query(`
@@ -109,9 +134,10 @@ router.get('/:id', async function (req, res) {
 	};
 
 	req.session.user = user;
-	//console.log(req.session.user);
-	//console.log({ username: req.session.name });
-	res.render('user.njk', {...req.session.user, quizes});
+	res.render('user.njk', {
+		...req.session.user,
+		quizes
+	});
 });
 
 

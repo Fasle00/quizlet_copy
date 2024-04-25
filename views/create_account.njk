@@ -15,6 +15,7 @@
 		placeholder="test@test.mail"
 		required
 		name="email"
+		value="{{email}}"
 	  />
 	  <div class="valid-feedback">Looks good!</div>
 	  <div class="invalid-feedback">Please provide a valid email.</div>
@@ -25,23 +26,24 @@
 		type="password"
 		class="form-control"
 		id="password"
-		value=""
 		required
 		name="password"
+		value="{{password}}"
 	  />
 	  <div class="valid-feedback">Looks good!</div>
 	</div>
 	<div class="col-md-4">
-	  <label for="username" class="form-label">Username</label>
+	  <label for="name" class="form-label">Username</label>
 	  <div class="input-group has-validation">
 		<span class="input-group-text" id="inputGroupPrepend">@</span>
 		<input
 		  type="text"
 		  class="form-control"
-		  id="username"
+		  id="name"
 		  aria-describedby="inputGroupPrepend"
 		  required
-		  name="username"
+		  name="name"
+		  value="{{name}}"
 		/>
 		<div class="invalid-feedback">Please choose a username.</div>
 	  </div>
@@ -54,6 +56,7 @@
 		id="city"
 		required
 		name="city"
+		value="{{city}}"
 	  />
 	  <div class="invalid-feedback">Please provide a valid city.</div>
 	</div>
@@ -65,10 +68,10 @@
 		required
 		name="state"
 	  >
-		<option selected disabled value="">Län</option>
-		<option>Västerbotten</option>
-		<option>Norrbotten</option>
-		<option>Lappland</option>
+		<option {% if not state %} selected {% endif %} disabled value="">Län</option>
+		<option {% if state == "Västerbotten" %} selected {% endif %}>Västerbotten</option>
+		<option {% if state == "Norrbotten" %} selected {% endif %}>Norrbotten</option>
+		<option {% if state == "Lappland" %} selected {% endif %}>Lappland</option>
 	  </select>
 	  <div class="invalid-feedback">Please select a valid state.</div>
 	</div>
@@ -80,6 +83,7 @@
 		id="zip"
 		required
 		name="zip"
+		value="{{zip}}"
 	  />
 	  <div class="invalid-feedback">Please provide a valid zip.</div>
 	</div>
@@ -88,10 +92,10 @@
 		<input
 		  class="form-check-input"
 		  type="checkbox"
-		  value=""
 		  id="invalidCheck"
 		  required
 		  name="check"
+		  {% if check -%} checked {%- endif %}
 		/>
 		<label class="form-check-label" for="invalidCheck">
 		  Agree to terms and conditions
