@@ -103,8 +103,14 @@ router.post('/:id/delete', async function (req, res) {
 	await pool.promise().query(`
 	DELETE FROM 
 		fabian_flashcard_user 
-	WHERE (\`name\` = '${req.session.username}';`
+	WHERE (\`name\` = '${req.session.name}');`
 	);
+	await pool.promise().query(`
+	DELETE FROM 
+		fabian_flashcard_quiz 
+	WHERE (\`ower\` = '${req.session.name}');`
+	);
+	req.session.destroy();
 	res.redirect('/');
 });
 
@@ -132,6 +138,11 @@ router.get('/:id', async function (req, res) {
 		username: req.session.name,
 		loggedIn: true,
 	};
+
+	let userQuizesID = [];
+	for (let i = 0; i < quizes.length; i++) {
+		userQuizesID.push(quizes[i].id);
+	}
 
 	req.session.user = user;
 	res.render('user.njk', {

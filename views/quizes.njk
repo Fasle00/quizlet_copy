@@ -12,8 +12,11 @@
 	{% for quiz in quizes %}
 	<div class="col">
 		<div class="card h-100">
+			
 			<div class="card-header">
-				{{quiz.name}}
+				<a href="/quiz/{{quiz.id}}">
+					{{quiz.name}}
+				</a>
 			</div>
 			<div class="card-body">
 				{{quiz.description}}
