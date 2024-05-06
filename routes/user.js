@@ -32,7 +32,7 @@ router.get("/logout", (req, res) => {
 
 // create user
 router.get('/new', async function (req, res) {
-	res.render('create_account.njk');
+	res.render('create_account.njk', req.session.user);
 });
 // create user
 router.post('/',
@@ -91,7 +91,7 @@ router.post('/',
 
 // update user
 router.get('/:id/update', async function (req, res) {
-	res.render('/update_user.njk');
+	res.render('/update_user.njk', req.session.user);
 });
 // update user
 router.post('/:id/update', async function (req, res) {
