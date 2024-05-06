@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 quest.addEventListener('click', (e) => {
 	if (e.target.classList.contains('list-group-item')) {
-		current = parseInt(e.target.dataset.id);
 		updateQuestions();
 	}
 });
