@@ -1,5 +1,7 @@
 {% extends "layout.njk" %}
 {% import "./component/navbar.njk" as navbar %}
+{% import "./component/quiz_list.njk" as quiz_list %}
+
 
 {% block content %}
 
@@ -8,26 +10,7 @@
 <main class="container">
 	<h1>Home</h1>
 	<p>Welcome to the home page</p>
-	<div class="row row-cols-md-4 gx-3 gy-3">
-	{% for quiz in quizes %}
-	<div class="col">
-		<div class="card h-100">
-			
-			<div class="card-header">
-				<a href="/quiz/{{quiz.id}}">
-					{{quiz.name}}
-				</a>
-			</div>
-			<div class="card-body">
-				{{quiz.description}}
-			</div>
-			<div class="card-footer">
-				{{quiz.username}}
-			</div>
-		</div>
-	</div>
-	{% endfor %}
-	</div>
+	{{ quiz_list.qList(quizes) }}
 </main>
 
 {% endblock %}

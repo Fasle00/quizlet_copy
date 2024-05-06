@@ -13,14 +13,20 @@
 	<ul class="list-group">
 	{% for question in questions %}
 		<li class="list-group-item row">
-			<div class="col">
+			<div class="col front">
 			{{question.front}}
 			</div>
-			<div class="col">
+			<div class="col back">
 			{{question.back}}
 			</div>
 		</li>
 	{% endfor %}
 	</ul>
+	<div class="d-flex justify-content-between">
+		<button class="left btn">Previous</button>
+		<span class="counter">1/10</span>
+		<button class="right btn">Next</button>
+	</div>
 </main>
+<script src="/js/quiz.js"></script>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "layout.njk" %}
 {% import "./component/navbar.njk" as navbar %}
+{% import "./component/quiz_list.njk" as quiz_list %}
 
 {% block content %}
 {{navbar.setActive("user", loggedIn, username)}}
@@ -13,23 +14,7 @@
 	</form>
 
 	<div>my quizes</div>
-	<div class="row row-cols-md-4 gx-3 gy-3">
-		{% for quiz in quizes %}
-		<div class="col">
-			<div class="card h-100">
-				<div class="card-header">
-					{{quiz.name}}
-				</div>
-				<div class="card-body">
-					{{quiz.description}}
-				</div>
-				<div class="card-footer">
-					{{quiz.username}}
-				</div>
-			</div>
-		</div>
-		{% endfor %}
-	</div>
+	{{quiz_list.qList(quizes)}}
 </main>
 
 {% endblock %}
