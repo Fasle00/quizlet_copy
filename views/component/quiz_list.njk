@@ -1,10 +1,14 @@
-{% macro qList(quizes) %}
+{% macro qList(quizes, user = false) %}
 <div class="row row-cols-md-4 gx-3 gy-3">
 	{% for quiz in quizes -%}
 	<div class="col">
 		<div class="card h-100">
 			<div class="card-header">
 				<a href="/quiz/{{quiz.id}}">{{quiz.name}}</a>
+				{%- if user -%}
+				<a href="/quiz/{{quiz.id}}/update">update</a>
+				<a href="/quiz/{{quiz.id}}/delete">delete</a>
+				{%- endif -%}
 			</div>
 			<div class="card-body">
 				{{quiz.description}}

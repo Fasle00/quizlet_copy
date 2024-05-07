@@ -20,45 +20,27 @@
 		required
 	  ></textarea>
 	</div>
-	
 	<ul class="question_list">
-		<li>
-			<label for="question">Question</label>
-			<textarea
-			  id="question"
-			  name="question"
-			  class="form-control"
-			  required
-			></textarea>
-		</li>
-
-		<li>
-			<label for="answer">Answer</label>
-			<textarea
-			  id="answer"
-			  name="answer"
-			  class="form-control"
-			  required
-			></textarea>
-		</li>
-		<li>
-			<label for="question">Question</label>
-			<textarea
-			  id="question"
-			  name="question"
-			  class="form-control"
-			  required
-			></textarea>
-		</li>
-
-		<li>
-			<label for="answer">Answer</label>
-			<textarea
-			  id="answer"
-			  name="answer"
-			  class="form-control"
-			  required
-			></textarea>
+		<li class="row g-3">
+			<div class="col-5">
+				<label for="question">Question</label>
+				<textarea
+				  id="question"
+				  name="question"
+				  class="form-control"
+				  required
+				></textarea>
+			</div>
+			<div class="col-5">
+				<label for="answer">Answer</label>
+				<textarea
+				  id="answer"
+				  name="answer"
+				  class="form-control"
+				  required
+				></textarea>
+			</div>
+			<button type="button" class="col-2 remove_question">Delete Question</button>
 		</li>
 	</ul>
 	<div class="col-12">
@@ -72,5 +54,5 @@
 	{% endif %}
   </form>
 </main>
-
+<script src="/js/question.js"></script>
 {% endblock %}

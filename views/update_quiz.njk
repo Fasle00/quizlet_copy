@@ -23,23 +23,26 @@
 	
 	<ul class="question_list">
 		{% for question in questions %}
-		<li>
-			<label for="question">Question</label>
-			<textarea
-			  id="question"
-			  name="question"
-			  class="form-control"
-			  required
-			>{{question.question}}</textarea>
-		</li>
-		<li class="answer">
-			<label for="answer">Answer</label>
-			<textarea
-			  id="answer"
-			  name="answer"
-			  class="form-control"
-			  required
-			>{{question.answer}}</textarea>
+		<li class="row g-3">
+			<div class="col-5">
+				<label for="question">Question</label>
+				<textarea
+				  id="question"
+				  name="question"
+				  class="form-control"
+				  required
+				>{{question.front}}</textarea>
+			</div>
+			<div class="col-5">
+				<label for="answer">Answer</label>
+				<textarea
+				  id="answer"
+				  name="answer"
+				  class="form-control"
+				  required
+				>{{question.back}}</textarea>
+			</div>
+			<button type="button" class="col-2 remove_question">Remove Question</button>
 		</li>
 		{% endfor %}
 	</ul>
@@ -54,5 +57,5 @@
 	{% endif %}
   </form>
 </main>
-
+<script src="/js/question.js"></script>
 {% endblock %}
