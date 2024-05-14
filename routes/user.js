@@ -60,12 +60,12 @@ router.post('/',
 						(
 							'${req.body.name}',
 							'${hash}',
-							'${req.body.mail}'
+							'${req.body.email}'
 						);`
 					);
 					console.log(responce);
-					req.session.name = req.body.username;
-					return res.redirect(`/user/${req.body.username}`);
+					req.session.name = req.body.name;
+					return res.redirect(`/user/${req.body.name}`);
 				} catch (error) {
 					console.log(error);
 					console.log(`error nr: ${error.errno}`);
@@ -90,28 +90,143 @@ router.post('/',
 });
 
 // update user
-router.get('/:id/update', async function (req, res) {
-	res.render('/update_user.njk', req.session.user);
+router.get('/:id/update', 
+async function (req, res) {
+	res.render('update_user.njk', req.session.user);
 });
 // update user
-router.post('/:id/update', async function (req, res) {
-	res.redirect(`/user/:${req.session.username}`);
+router.post('/:id/update', 
+	body('email').isLength({ min: 2 }).isEmail(),
+	body('name').isLength({ min: 4, max: 32 }),
+	body('password').isLength({ min: 4, max: 32 }),
+	body('city').isLength({ min: 2 }),
+	body('state').isLength({ min: 4 }),
+	body('zip').isLength({ min: 4 }),
+async function (req, res) {
+	/*
+	 * checks if the user is logged in
+	 * or if the user is trying to update another user
+	 */
+	if (req.session.name === undefined) {
+		console.log("no session")
+		return res.redirect('/login');
+	} else if (req.params.id !== req.session.name){
+		console.log("wrong user")
+		return res.redirect(`/user/${req.session.name}`);
+	}
+
+	/*
+	 * checks if the input is valid
+	 */
+	const valRes = validationResult(req);
+	if (!valRes.isEmpty()) {
+		console.log(valRes.errors);
+		return res.render('update_user.njk', { 
+			error: "poggers test error" 
+		});
+	}
+
+	try {
+		bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+			try {
+				console.log(req.body)
+				let responce;
+				if (req.body.name === req.session.name) {
+					responce = await pool.promise().query(`
+					UPDATE
+						fabian_flashcard_user
+					SET
+						password = '${hash}',
+						email = '${req.body.email}'
+					WHERE
+						name = '${req.session.name}';`
+					);
+				} else {
+					responce = await pool.promise().query(`
+					UPDATE
+						fabian_flashcard_user
+					SET
+						name = '${req.body.name}',
+						password = '${hash}',
+						email = '${req.body.email}'
+					WHERE
+						name = '${req.session.name}';`
+					);
+				}
+				console.log(responce);
+				req.session.name = req.body.name;
+				return res.redirect(`/user/${req.body.name}`);
+			} catch (error) {
+				console.log(error);
+				console.log(`error nr: ${error.errno}`);
+				if (error.errno === 1062) {
+					console.log(req.body);
+					return res.render('update_user.njk', { 
+						error: "Username already taken", 
+						...req.body
+					});
+				} else {
+					return res.render('update_user.njk', { 
+						error: "Failed to update your account"
+					});
+				}
+			}
+		})
+	} catch (error) {
+		return res.render('create_account.njk', { 
+			error: "Failed to create an account"
+		});
+	}
+
+	//res.redirect(`/user/:${req.session.name}`);
 });
 
 // delete user
 router.post('/:id/delete', async function (req, res) {
-	await pool.promise().query(`
-	DELETE FROM 
-		fabian_flashcard_user 
-	WHERE (\`name\` = '${req.session.name}');`
-	);
-	await pool.promise().query(`
-	DELETE FROM 
-		fabian_flashcard_quiz 
-	WHERE (\`ower\` = '${req.session.name}');`
-	);
-	req.session.destroy();
-	res.redirect('/');
+	try {
+		const [user] = await pool.promise().query(`
+		SELECT
+			fabian_flashcard_user.id
+		FROM
+			fabian_flashcard_user
+		WHERE fabian_flashcard_user.name = '${req.session.name}'`
+		);
+		const [quizes] = await pool.promise().query(`
+		SELECT 
+			*
+		FROM
+			fabian_flashcard_quiz WHERE owner_id = ?;`, [user[0].id]
+		);
+		await pool.promise().query(`
+		DELETE FROM 
+			fabian_flashcard_user 
+		WHERE (\`name\` = '${req.session.name}');`
+		);
+
+		await pool.promise().query(`
+		DELETE FROM 
+			fabian_flashcard_quiz 
+		WHERE (\`owner_id\` = '${req.session.name}');`
+		);
+
+		if (quizes.length === 0) {
+			req.session.destroy();
+			return res.redirect('/');
+		}
+		quizes.forEach(async quiz => {
+			await pool.promise().query(`
+			DELETE FROM 
+				fabian_flashcard_question 
+			WHERE (\`quiz_id\` = '${quiz.id}');`
+			);
+		});
+		req.session.destroy();
+		res.redirect('/');
+	} catch (error) {
+		console.log(error);
+		res.redirect(`/user/${req.session.name}`);
+	}
+	
 });
 
 // show user
