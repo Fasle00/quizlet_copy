@@ -25,16 +25,19 @@ router.get('/', async function (req, res) {
     res.render('quizes.njk', {
         ...req.session.user,
         quizes,
-        title: `Quizes`
+        title: `Quizes`,
     });
 });
 
 // new quiz
 router.get('/new', async function (req, res) {
-    //if (req.session.name === undefined) {
-    //    return res.redirect('/login');
-    //}
-    res.render('new_quiz.njk', {...req.session.user, title: `New Quiz`});
+    if (req.session.name === undefined) {
+        return res.redirect('/login');
+    }
+    res.render('new_quiz.njk', {
+        ...req.session.user,
+        title: `New Quiz`,
+    });
 });
 // create quiz
 router.post('/',
@@ -43,9 +46,9 @@ router.post('/',
     body('question').isLength({ min: 1, max: 255 }),
     body('answer').isLength({ min: 1, max: 255 }),
     async function (req, res) {
-        /*if (req.session.name === undefined) {
+        if (req.session.name === undefined) {
             return res.redirect('/login');
-        }*/
+        }
 
         if (typeof (req.body.question) === 'string') {
             req.body.question = [req.body.question];
@@ -54,57 +57,55 @@ router.post('/',
 
         if (!validationResult(req).isEmpty()) {
             let errors = validationResult(req).array();
-            console.log(errors);
 
-            console.log("rewriting errors")
             let output = [];
             for (let i = 0; i < errors.length; i++) {
                 if (errors[i].path === 'name') {
                     errors[i].msg = "Name was to short or long (min 4 max 255 characters)";
-                    output.push({ param: 'name', msg: "Name was to short or long (min 4 max 255 characters)" })
+                    output.push({
+                        param: 'name',
+                        msg: "Name was to short or long (min 4 max 255 characters)",
+                    });
                 }
                 if (errors[i].path === 'description') {
                     errors[i].msg = "Description was to short or long (min 10 max 255 characters)";
-                    output.push({ param: 'description', msg: "Description was to short or long (min 10 max 255 characters)" })
-                }/*
-                if (errors[i].path === 'question') {
-                    errors[i].msg = "Question was to short or long (min 1 max 255 characters)";
+                    output.push({
+                        param: 'description',
+                        msg: "Description was to short or long (min 10 max 255 characters)",
+                    });
                 }
-                if (errors[i].path === 'answer') {
-                    errors[i].msg = "Answer was to short or long (min 1 max 255 characters)";
-                }*/
             }
 
             let questOutput = [];
 
             for (let i = 0; i < req.body.question.length; i++) {
                 if (req.body.question[i].length < 1 || req.body.question[i].length > 255) {
-                    errors.push({ 
-                        param: 'question', 
-                        msg: `Question ${i + 1} was to short or long (min 1 max 255 characters)` 
+                    errors.push({
+                        param: 'question',
+                        msg: `Question ${i + 1} was to short or long (min 1 max 255 characters)`,
                     });
-                    output.push({ 
-                        param: 'question', 
-                        msg: `Question ${i + 1} was to short or long (min 1 max 255 characters)` 
+                    output.push({
+                        param: 'question',
+                        msg: `Question ${i + 1} was to short or long (min 1 max 255 characters)`,
                     });
-                    questOutput.push({ 
-                        param: 'question', 
+                    questOutput.push({
+                        param: 'question',
                         msg: `Question ${i + 1} was to short or long (min 1 max 255 characters)`,
                         index: i,
                     });
                 }
                 if (req.body.answer[i].length < 1 || req.body.answer[i].length > 255) {
-                    errors.push({ 
-                        param: 'answer', 
-                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)` 
+                    errors.push({
+                        param: 'answer',
+                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)`,
                     });
-                    output.push({ 
-                        param: 'answer', 
-                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)` 
+                    output.push({
+                        param: 'answer',
+                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)`,
                     });
-                    questOutput.push({ 
-                        param: 'answer', 
-                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)`, 
+                    questOutput.push({
+                        param: 'answer',
+                        msg: `Answer ${i + 1} was to short or long (min 1 max 255 characters)`,
                         index: i,
                     });
                 }
@@ -113,21 +114,14 @@ router.post('/',
                 errors.push({ param: 'question', msg: "Question and Answer don't match" });
                 output.push({ param: 'question', msg: "Question and Answer don't match" });
             }
-            console.log(errors);
-            console.log("output")
-            console.log(output);
-            console.log("questOutput")
-            console.log(questOutput);
-            //console.log(req.body);
 
             return res.render('new_quiz.njk', {
                 ...req.session.user,
                 error: output,
                 ...req.body,
-                title: `New Quiz`
+                title: `New Quiz`,
             });
         }
-        return res.json(req.body);
 
         try {
             const [id] = await pool.promise().query(`

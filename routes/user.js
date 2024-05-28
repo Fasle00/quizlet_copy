@@ -32,7 +32,10 @@ router.get("/logout", (req, res) => {
 
 // create user
 router.get('/new', async function (req, res) {
-    res.render('create_account.njk', {...req.session.user, title: `Create Account`});
+    res.render('create_account.njk', { 
+        ...req.session.user, 
+        title: `Create Account`,
+    });
 });
 // create user
 router.post('/',
@@ -46,9 +49,9 @@ router.post('/',
         const valRes = validationResult(req);
         if (!valRes.isEmpty()) {
             console.log(valRes.errors);
-            return res.render('create_account.njk', { 
+            return res.render('create_account.njk', {
                 ...req.session.user,
-                error: "poggers test error" ,
+                error: "poggers test error",
                 title: `Create Account`,
             });
         }
@@ -73,75 +76,78 @@ router.post('/',
                     console.log(`error nr: ${error.errno}`);
                     if (error.errno === 1062) {
                         console.log(req.body);
-                        return res.render('create_account.njk', { 
+                        return res.render('create_account.njk', {
                             ...req.session.user,
                             title: `Create Account`,
-                            error: "Username already taken", 
+                            error: "Username already taken",
                             ...req.body,
                         });
                     } else {
-                        return res.render('create_account.njk', { 
+                        return res.render('create_account.njk', {
                             ...req.session.user,
                             title: `Create Account`,
-                            error: "Failed to create an account"
+                            error: "Failed to create an account",
                         });
                     }
                 }
             })
         } catch (error) {
-            return res.render('create_account.njk', { 
+            return res.render('create_account.njk', {
                 ...req.session.user,
                 title: `Create Account`,
-                error: "Failed to create an account"
+                error: "Failed to create an account",
             });
         }
-});
+    });
 
 // update user
-router.get('/:id/update', 
-async function (req, res) {
-    res.render('update_user.njk', {...req.session.user, title: `Update Account`});
-});
+router.get('/:id/update',
+    async function (req, res) {
+        res.render('update_user.njk', { 
+            ...req.session.user, 
+            title: `Update Account`,
+        });
+    });
 // update user
-router.post('/:id/update', 
+router.post('/:id/update',
     body('email').isLength({ min: 2 }).isEmail(),
     body('name').isLength({ min: 4, max: 32 }),
     body('password').isLength({ min: 4, max: 32 }),
     body('city').isLength({ min: 2 }),
     body('state').isLength({ min: 4 }),
     body('zip').isLength({ min: 4 }),
-async function (req, res) {
-    
-    // checks if the user is logged in
-    // or if the user is trying to update another user
-    if (req.session.name === undefined) {
-        console.log("no session")
-        return res.redirect('/login');
-    } else if (req.params.id !== req.session.name){
-        console.log("wrong user")
-        return res.redirect(`/user/${req.session.name}`);
-    }
+    async function (req, res) {
 
-    // checks if the input is valid
-    const valRes = validationResult(req);
-    if (!valRes.isEmpty()) {
-        console.log(valRes.errors);
-        return res.render('update_user.njk', { 
-            ...req.session.user,
-            title: `Update Account`,
-            error: "poggers test error",
-        });
-    }
+        // checks if the user is logged in
+        // or if the user is trying to update another user
+        if (req.session.name === undefined) {
+            console.log("no session");
+            return res.redirect('/login');
+        } else if (req.params.id !== req.session.name) {
+            console.log("wrong user");
+            return res.redirect(`/user/${req.session.name}`);
+        }
 
-    try {
-        // hashes the password
-        bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
-            try {
+        // checks if the input is valid
+        const valRes = validationResult(req);
+        if (!valRes.isEmpty()) {
+            console.log(valRes.errors);
+            return res.render('update_user.njk', {
+                ...req.session.user,
+                title: `Update Account`,
+                error: "poggers test error",
+            });
+        }
 
-                // updates the user and checks if the user is changing their name
-                let responce;
-                if (req.body.name === req.session.name) {
-                    responce = await pool.promise().query(`
+        try {
+            // hashes the password
+            bcrypt.hash(req.body.password, saltRounds, async function (err, hash) {
+                try {
+
+                    // updates the user and checks if the user is changing their name
+                    let responce;
+                    if (req.body.name === req.session.name) {
+                        responce = await pool.promise().query(`
                     UPDATE
                         fabian_flashcard_user
                     SET
@@ -149,9 +155,9 @@ async function (req, res) {
                         email = '${req.body.email}'
                     WHERE
                         name = '${req.session.name}';`
-                    );
-                } else {
-                    responce = await pool.promise().query(`
+                        );
+                    } else {
+                        responce = await pool.promise().query(`
                     UPDATE
                         fabian_flashcard_user
                     SET
@@ -160,41 +166,39 @@ async function (req, res) {
                         email = '${req.body.email}'
                     WHERE
                         name = '${req.session.name}';`
-                    );
-                }
+                        );
+                    }
 
-                // sets the users session name to the new name
-                req.session.name = req.body.name;
-                return res.redirect(`/user/${req.body.name}`);
-            } catch (error) {
-                console.log(error);
-                console.log(`error nr: ${error.errno}`);
-                if (error.errno === 1062) { // checks if the username is already taken
-                    console.log(req.body);
-                    return res.render('update_user.njk', { 
-                        error: "Username already taken", 
-                        ...req.body
-                    });
-                } else {
-                    return res.render('update_user.njk', { 
-                        ...req.session.user,
-                        title: `Update Account`,
-                        error: "Failed to update your account",
-                        ...req.body, 
-                    });
+                    // sets the users session name to the new name
+                    req.session.name = req.body.name;
+                    return res.redirect(`/user/${req.body.name}`);
+                } catch (error) {
+                    console.log(error);
+                    console.log(`error nr: ${error.errno}`);
+                    if (error.errno === 1062) { // checks if the username is already taken
+                        console.log(req.body);
+                        return res.render('update_user.njk', {
+                            error: "Username already taken",
+                            ...req.body,
+                        });
+                    } else {
+                        return res.render('update_user.njk', {
+                            ...req.session.user,
+                            title: `Update Account`,
+                            error: "Failed to update your account",
+                            ...req.body,
+                        });
+                    }
                 }
-            }
-        })
-    } catch (error) {
-        return res.render('create_account.njk', { 
-            ...req.session.user,
-            title: `Update Account`,
-            error: "Failed to create an account",
-        });
-    }
-
-    //res.redirect(`/user/:${req.session.name}`);
-});
+            })
+        } catch (error) {
+            return res.render('create_account.njk', {
+                ...req.session.user,
+                title: `Update Account`,
+                error: "Failed to create an account",
+            });
+        }
+    });
 
 // delete user
 router.post('/:id/delete', async function (req, res) {
@@ -241,14 +245,13 @@ router.post('/:id/delete', async function (req, res) {
         console.log(error);
         res.redirect(`/user/${req.session.name}`);
     }
-    
 });
 
 // show user
 router.get('/:id', async function (req, res) {
     if (req.session.name === undefined) {
         return res.redirect('/login');
-    } else if (req.params.id !== req.session.name){
+    } else if (req.params.id !== req.session.name) {
         return res.redirect(`/user/${req.session.name}`);
     }
 
