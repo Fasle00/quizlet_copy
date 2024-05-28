@@ -1,80 +1,91 @@
 {% macro setActive(currentPage='index', loggedIn='false', username='') %}
-<nav class="">
-	<ul class="nav nav-tabs">
-		<li class="nav-item">
-			{% if currentPage == "index" -%}
-				<a class="nav-link active" aria-current="page" href="/">Home</a>
-			{%- else -%}
-				<a class="nav-link" href="/">Home</a>
-			{%- endif %}
-		</li>
+<div class="container mb-4">
+    <nav class="navbar navbar-expand-lg rounded">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="/images/Databas_plan.png" alt="En plan över hur databasen skulle se ut" class="d-inline-block align-text-top">
+            </a>
+            <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-		<li class="nav-item">
-			{% if currentPage == "quiz" -%}
-				<a class="nav-link active" aria-current="page" href="/quiz">Quizes</a>
-			{%- else -%}
-				<a class="nav-link" href="/quiz">Quizes</a>
-			{%- endif %}
-		</li>
+            <div class="navbar-collapse collapse" id="navbarToggle" style="">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        {% if currentPage == "index" -%}
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        {%- else -%}
+                        <a class="nav-link" href="/">Home</a>
+                        {%- endif %}
+                    </li>
 
-		<form action="/quiz/search" class="d-flex" method="get">
-			<input name="q" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
-			<button for="q" class="btn btn-outline-success" type="submit">Search</button>
-		</form>
+                    <li class="nav-item">
+                        {% if currentPage == "quiz" -%}
+                        <a class="nav-link active" aria-current="page" href="/quiz">Quizes</a>
+                        {%- else -%}
+                        <a class="nav-link" href="/quiz">Quizes</a>
+                        {%- endif %}
+                    </li>
+                </ul>
 
-		{% if currentPage == "user" -%}
+                <form action="/quiz/search" class="d-flex" method="get">
+                    <input name="q" class="form-control me-2" type="text" placeholder="Search" aria-label="Search">
+                    <button for="q" class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                {% if currentPage == "user" -%}
+                <div class="nav-item dropdown ms-lg-2 ms-md-0">
+                    <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        User
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
+                        <li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                    </ul>
+                </div>
 
-		{# <li class="nav-item">
-			<a class="nav-link active"  href="/user/{{username}}">User</a>
-		</li> #}
-		<li class="nav-item dropdown">
-		  <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-			User
-		  </a>
-		  <ul class="dropdown-menu">
-			<li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
-			<li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
-			<li><hr class="dropdown-divider"></li>
-			<li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-		  </ul>
-		</li>
+                {%- elif loggedIn == true -%}
+                <div class="nav-item dropdown ms-lg-2 ms-md-0">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        User
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
+                        <li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                    </ul>
+                </div>
+                {%- else -%}
 
-		{%- elif loggedIn == true -%}
+                <div class="nav-item ms-lg-2 ms-md-0">
+                    {% if currentPage == "login" -%}
+                    <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                    {%- else -%}
+                    <a class="nav-link" href="/login">Login</a>
+                    {%- endif %}
+                </div>
 
-		{# <li class="nav-item">
-			<a class="nav-link" href="/user/{{username}}">User</a>
-		</li> #}
-		<li class="nav-item dropdown">
-		  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-			User
-		  </a>
-		  <ul class="dropdown-menu">
-			<li><a class="dropdown-item" href="/user/{{username}}">Settings</a></li>
-			<li><a class="dropdown-item" href="/user/{{username}}/update">Update User</a></li>
-			<li><hr class="dropdown-divider"></li>
-			<li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-		  </ul>
-		</li>
+                <div class="nav-item ms-lg-2 ms-md-0">
+                    {% if currentPage == "register" -%}
+                    <a class="nav-link active" aria-current="page" href="/user/new">Register</a>
+                    {%- else -%}
+                    <a class="nav-link" href="/user/new">Register</a>
+                    {%- endif %}
+                </div>
 
-		{%- else -%}
-
-		<li class="nav-item">
-			{% if currentPage == "login" -%}
-				<a class="nav-link active" aria-current="page" href="/login">Login</a>
-			{%- else -%}
-				<a class="nav-link" href="/login">Login</a>
-			{%- endif %}
-		</li>
-
-		<li class="nav-item">
-			{% if currentPage == "register" -%}
-				<a class="nav-link active" aria-current="page" href="/user/new">Register</a>
-			{%- else -%}
-				<a class="nav-link" href="/user/new">Register</a>
-			{%- endif %}
-		</li>
-
-		{%- endif %}
-  </ul>
-</nav>
+                {%- endif %}
+            </div>
+        </div>
+    </nav>
+</div>
 {% endmacro %}

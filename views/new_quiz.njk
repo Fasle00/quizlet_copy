@@ -6,52 +6,108 @@
 {{navbar.setActive("user", loggedIn, username)}}
 
 <main class="container">
-  <form action="/quiz" method="post" class="row g-3">
-	<div class="col-12">
-	  <label for="name" class="form-label">Quiz Name</label>
-	  <input name="name" type="text" class="form-control" id="name" required />
-	</div>
-	<div class="col-12">
-	  <label for="description" class="form-label">Description</label>
-	  <textarea
-		name="description"
-		class="form-control"
-		id="description"
-		required
-	  ></textarea>
-	</div>
-	<ul class="question_list">
-		<li class="row g-3">
-			<div class="col-5">
-				<label for="question">Question</label>
-				<textarea
-				  id="question"
-				  name="question"
-				  class="form-control"
-				  required
-				></textarea>
-			</div>
-			<div class="col-5">
-				<label for="answer">Answer</label>
-				<textarea
-				  id="answer"
-				  name="answer"
-				  class="form-control"
-				  required
-				></textarea>
-			</div>
-			<button type="button" class="col-2 remove_question">Delete Question</button>
-		</li>
-	</ul>
-	<div class="col-12">
-	  <button type="button" id="add_question">Add Question</button>
-	</div>
-	<div class="col-12">
-	  <input type="submit" id="submit" name="submit" />
-	</div>
-	{% if error %}
-	<div>{{error}}</div>
-	{% endif %}
+  <form action="/quiz" method="post" class="row g-3 needs-validation">
+    <div class="col-12">
+      <label for="name" class="form-label">Quiz Name</label>
+      <input 
+      name="name" 
+      type="text" 
+      class="form-control {% if error %}{%- if error[0].param == "name" -%} is-invalid {% elif error[0].param != "name" %} is-valid {% endif %}{% endif %}" 
+      id="name" 
+      value="{{name}}"
+      {# required #} />
+      <div class="valid-feedback">
+      Looks good!
+      </div>
+      <div class="invalid-feedback">
+      Please enter a name for the quiz (min 4, max 255).
+      </div>
+    </div>
+    <div class="col-12">
+      <label for="description" class="form-label">Description</label>
+      <textarea name="description"
+        class="form-control {% if error %}
+        {% if error[0].param == "description" or error[1].param == "description" %} 
+        is-invalid 
+        {% elif error[0].param != "description" or error[1].param != "description" %} 
+        is-valid 
+        {% endif %}
+        {% endif %}"
+        id="description"
+        {# required #}>{{description}}</textarea>
+      <div class="valid-feedback">
+      Looks good!
+      </div>
+      <div class="invalid-feedback">
+      Please enter a description for the quiz (min 10, max 255).
+      </div>
+    </div>
+    <ul class="question_list">
+        {% if question %}
+        {% for front in question %}
+        <li class="row g-3">
+            <div class="col-5">
+                <label for="question">Question</label>
+                <textarea
+                  id="question"
+                  name="question"
+                  class="form-control"
+                  {# required #}
+                >{{front}}</textarea>
+                <div class="invalid-feedback">
+                Please enter a question for the quiz (min 1, max 255).
+                </div>
+            </div>
+            <div class="col-5">
+                <label for="answer">Answer</label>
+                <textarea
+                  id="answer"
+                  name="answer"
+                  class="form-control"
+                  {# required #}
+                >{{answer[loop.index - 1]}}</textarea>
+                <div class="invalid-feedback">
+                Please enter a answer for the question (min 1, max 255).
+                </div>
+            </div>
+            <button type="button" class="col-2 remove_question">Delete Question</button>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="row g-3">
+            <div class="col-5">
+                <label for="question">Question</label>
+                <textarea
+                  id="question"
+                  name="question"
+                  class="form-control"
+                  {# required #}
+                ></textarea>
+            </div>
+            <div class="col-5">
+                <label for="answer">Answer</label>
+                <textarea
+                  id="answer"
+                  name="answer"
+                  class="form-control"
+                  {# required #}
+                ></textarea>
+            </div>
+            <button type="button" class="col-2 remove_question">Delete Question</button>
+        </li>
+        {% endif %}
+    </ul>
+    <div class="col-12">
+      <button type="button" id="add_question">Add Question</button>
+    </div>
+    <div class="col-12">
+      <input type="submit" id="submit" name="submit" />
+    </div>
+    {% if error %}
+    {% for message in error %}
+    <div class="alert alert-danger">{{message.msg}}</div>
+    {% endfor %}
+    {% endif %}
   </form>
 </main>
 <script src="/js/question.js"></script>

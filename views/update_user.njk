@@ -7,112 +7,112 @@
 
 <main class="container">
   <form action="/user/{{username}}/update" method="post" class="row g-3 needs-validation">
-	<div class="col-md-4">
-	  <label for="email" class="form-label">Email</label>
-	  <input
-		type="email"
-		class="form-control"
-		id="email"
-		placeholder="test@test.mail"
-		required
-		name="email"
-		value="{{email}}"
-	  />
-	  <div class="valid-feedback">Looks good!</div>
-	  <div class="invalid-feedback">Please provide a valid email.</div>
-	</div>
-	<div class="col-md-4">
-	  <label for="password" class="form-label">Password</label>
-	  <input
-		type="password"
-		class="form-control"
-		id="password"
-		required
-		name="password"
-		value="{{password}}"
-	  />
-	  <div class="valid-feedback">Looks good!</div>
-	</div>
-	<div class="col-md-4">
-	  <label for="name" class="form-label">Username</label>
-	  <div class="input-group has-validation">
-		<span class="input-group-text" id="inputGroupPrepend">@</span>
-		<input
-		  type="text"
-		  class="form-control"
-		  id="name"
-		  aria-describedby="inputGroupPrepend"
-		  required
-		  name="name"
-		  value="{{name}}"
-		/>
-		<div class="invalid-feedback">Please choose a username.</div>
-	  </div>
-	</div>
-	<div class="col-md-6">
-	  <label for="city" class="form-label">City</label>
-	  <input
-		type="text"
-		class="form-control"
-		id="city"
-		required
-		name="city"
-		value="{{city}}"
-	  />
-	  <div class="invalid-feedback">Please provide a valid city.</div>
-	</div>
-	<div class="col-md-3">
-	  <label for="state" class="form-label">State</label>
-	  <select
-		class="form-select"
-		id="state"
-		required
-		name="state"
-	  >
-		<option {% if not state %} selected {% endif %} disabled value="">Län</option>
-		<option {% if state == "Västerbotten" %} selected {% endif %}>Västerbotten</option>
-		<option {% if state == "Norrbotten" %} selected {% endif %}>Norrbotten</option>
-		<option {% if state == "Lappland" %} selected {% endif %}>Lappland</option>
-	  </select>
-	  <div class="invalid-feedback">Please select a valid state.</div>
-	</div>
-	<div class="col-md-3">
-	  <label for="zip" class="form-label">Zip</label>
-	  <input
-		type="text"
-		class="form-control"
-		id="zip"
-		required
-		name="zip"
-		value="{{zip}}"
-	  />
-	  <div class="invalid-feedback">Please provide a valid zip.</div>
-	</div>
-	<div class="col-12">
-	  <div class="form-check">
-		<input
-		  class="form-check-input"
-		  type="checkbox"
-		  id="invalidCheck"
-		  required
-		  name="check"
-		  {% if check -%} checked {%- endif %}
-		/>
-		<label class="form-check-label" for="invalidCheck">
-		  Agree to terms and conditions
-		</label>
-		<div class="invalid-feedback">You must agree before submitting.</div>
-	  </div>
-	</div>
-	<div class="col-12">
-	  <input type="submit" id="submit" class="btn btn-primary" name="submit" />
-	  {# <button class="btn btn-primary" type="submit">Submit form</button> #}
-	</div>
+    <div class="col-md-4">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        placeholder="test@test.mail"
+        required
+        name="email"
+        value="{{email}}"
+      />
+      <div class="valid-feedback">Looks good!</div>
+      <div class="invalid-feedback">Please provide a valid email.</div>
+    </div>
+    <div class="col-md-4">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        required
+        name="password"
+        value="{{password}}"
+      />
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+    <div class="col-md-4">
+      <label for="name" class="form-label">Username</label>
+      <div class="input-group has-validation">
+        <span class="input-group-text" id="inputGroupPrepend">@</span>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          aria-describedby="inputGroupPrepend"
+          required
+          name="name"
+          value="{{name}}"
+        />
+        <div class="invalid-feedback">Please choose a username.</div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label for="city" class="form-label">City</label>
+      <input
+        type="text"
+        class="form-control"
+        id="city"
+        required
+        name="city"
+        value="{{city}}"
+      />
+      <div class="invalid-feedback">Please provide a valid city.</div>
+    </div>
+    <div class="col-md-3">
+      <label for="state" class="form-label">State</label>
+      <select
+        class="form-select"
+        id="state"
+        required
+        name="state"
+      >
+        <option {% if not state %} selected {% endif %} disabled value="">Län</option>
+        <option {% if state == "Västerbotten" %} selected {% endif %}>Västerbotten</option>
+        <option {% if state == "Norrbotten" %} selected {% endif %}>Norrbotten</option>
+        <option {% if state == "Lappland" %} selected {% endif %}>Lappland</option>
+      </select>
+      <div class="invalid-feedback">Please select a valid state.</div>
+    </div>
+    <div class="col-md-3">
+      <label for="zip" class="form-label">Zip</label>
+      <input
+        type="text"
+        class="form-control"
+        id="zip"
+        required
+        name="zip"
+        value="{{zip}}"
+      />
+      <div class="invalid-feedback">Please provide a valid zip.</div>
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="invalidCheck"
+          required
+          name="check"
+          {% if check -%} checked {%- endif %}
+        />
+        <label class="form-check-label" for="invalidCheck">
+          Agree to terms and conditions
+        </label>
+        <div class="invalid-feedback">You must agree before submitting.</div>
+      </div>
+    </div>
+    <div class="col-12">
+      <input type="submit" id="submit" class="btn btn-primary" name="submit" />
+      {# <button class="btn btn-primary" type="submit">Submit form</button> #}
+    </div>
   </form>
   {% if error %}
-	<div class="alert alert-danger" role="alert">
-	  {{error}}
-	</div>
+    <div class="alert alert-danger" role="alert">
+      {{error}}
+    </div>
   {% endif %}
 </main>
 {% endblock %}

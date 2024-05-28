@@ -6,27 +6,31 @@
 {{ navbar.setActive("quiz", loggedIn, username) }}
 
 <main class="container">
-	<h1>{{quiz.name}}</h1>
-	<h2>{{quiz.username}}</h2>
-	<p>{{quiz.description}}</p>
+    <h1>{{quiz.name}}</h1>
+    <h2 class="mb-3">{{quiz.username}}</h2>
+    <p>{{quiz.description}}</p>
 
-	<ul class="list-group">
-	{% for question in questions %}
-		<li class="list-group-item row">
-			<div class="col front">
-			{{question.front}}
-			</div>
-			<div class="col back">
-			{{question.back}}
-			</div>
-		</li>
-	{% endfor %}
-	</ul>
-	<div class="d-flex justify-content-between">
-		<button class="left btn">Previous</button>
-		<span class="counter">1/10</span>
-		<button class="right btn">Next</button>
-	</div>
+    <div class="question_list">
+        {% for question in questions %}
+        <div class="question">
+            <div class="question_inner">
+                <div class="question_front">
+                    {{question.front}}
+                </div>
+                <div class="question_back">
+                    {{question.back}}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <button class="left btn">Previous</button>
+        <span class="counter">1/10</span>
+        <button class="right btn">Next</button>
+    </div>
 </main>
 <script src="/js/quiz.js"></script>
+
 {% endblock %}

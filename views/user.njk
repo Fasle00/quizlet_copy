@@ -6,15 +6,15 @@
 {{navbar.setActive("user", loggedIn, username)}}
 
 <main class="container">
-	<h1> {{ username }}</h1>
-	<a href="/quiz/new" class="mb-3">create quiz</a>
-	
-	<form action="/user/{{username}}/delete" method="post">
-		<button type="submit" class="btn btn-danger">delete account</button>
-	</form>
+    <h1> {{ username }}</h1>
+    <a href="/quiz/new" class="mb-3">create quiz</a>
+    
+    <form action="/user/{{username}}/delete" method="post">
+        <button type="submit" class="btn btn-danger">delete account</button>
+    </form>
 
-	<div>my quizes</div>
-	{{quiz_list.qList(quizes, true)}}
+    <div>my quizes</div>
+    {{quiz_list.qList(quizes, true)}}
 </main>
 
 {% endblock %}

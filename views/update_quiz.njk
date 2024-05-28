@@ -7,54 +7,54 @@
 
 <main class="container">
   <form action="/quiz/{{id}}/update" method="post" class="row g-3">
-	<div class="col-12">
-	  <label for="name" class="form-label">Quiz Name</label>
-	  <input name="name" type="text" class="form-control" id="name" value="{{quiz.name}}" required />
-	</div>
-	<div class="col-12">
-	  <label for="description" class="form-label">Description</label>
-	  <textarea
-		name="description"
-		class="form-control"
-		id="description"
-		required
-	  >{{quiz.description}}</textarea>
-	</div>
-	
-	<ul class="question_list">
-		{% for question in questions %}
-		<li class="row g-3">
-			<div class="col-5">
-				<label for="question">Question</label>
-				<textarea
-				  id="question"
-				  name="question"
-				  class="form-control"
-				  required
-				>{{question.front}}</textarea>
-			</div>
-			<div class="col-5">
-				<label for="answer">Answer</label>
-				<textarea
-				  id="answer"
-				  name="answer"
-				  class="form-control"
-				  required
-				>{{question.back}}</textarea>
-			</div>
-			<button type="button" class="col-2 remove_question">Remove Question</button>
-		</li>
-		{% endfor %}
-	</ul>
-	<div class="col-12">
-	  <button type="button" id="add_question">Add Question</button>
-	</div>
-	<div class="col-12">
-	  <input type="submit" id="submit" name="submit" />
-	</div>
-	{% if error %}
-	<div>{{error}}</div>
-	{% endif %}
+    <div class="col-12">
+      <label for="name" class="form-label">Quiz Name</label>
+      <input name="name" type="text" class="form-control" id="name" value="{{quiz.name}}" required />
+    </div>
+    <div class="col-12">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        name="description"
+        class="form-control"
+        id="description"
+        required
+      >{{quiz.description}}</textarea>
+    </div>
+    
+    <ul class="question_list">
+        {% for question in questions %}
+        <li class="row g-3">
+            <div class="col-5">
+                <label for="question">Question</label>
+                <textarea
+                  id="question"
+                  name="question"
+                  class="form-control"
+                  required
+                >{{question.front}}</textarea>
+            </div>
+            <div class="col-5">
+                <label for="answer">Answer</label>
+                <textarea
+                  id="answer"
+                  name="answer"
+                  class="form-control"
+                  required
+                >{{question.back}}</textarea>
+            </div>
+            <button type="button" class="col-2 remove_question">Remove Question</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="col-12">
+      <button type="button" id="add_question">Add Question</button>
+    </div>
+    <div class="col-12">
+      <input type="submit" id="submit" name="submit" />
+    </div>
+    {% if error %}
+    <div>{{error}}</div>
+    {% endif %}
   </form>
 </main>
 <script src="/js/question.js"></script>
